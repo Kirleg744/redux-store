@@ -1,0 +1,41 @@
+.book-img{
+    width: 150px;
+    height: 200px;
+}
+
+.book-list-item{
+    display: flex;
+
+}
+
+.book-details{
+    width: 100%;
+}
+
+.book-author{
+    font-size: rem;
+}
+
+.book-title{
+    line-height: normal;
+    font-size: 28px;
+}
+
+.book-cover{
+    margin-right: 10px;
+}
+
+.book-list-item .book-details{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+a{
+    text-decoration: none;
+}
+
+.add-to-card{
+    padding: 10px 15px;
+    width: 100%;
+}
