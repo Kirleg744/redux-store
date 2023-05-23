@@ -11,7 +11,7 @@ const ShopHeader = ({ totalNum, orderTotal, onSearched }) => {
 
     return (
         <header className="shop-header">
-            <Link to="/">
+            <Link to="/redux-store">
                 <div href="#" className="logo text-dark">
                     ReStore
                 </div>

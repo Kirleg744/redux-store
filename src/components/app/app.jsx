@@ -8,7 +8,7 @@ const App = () => {
         <main className="container" role="main">
             <ShopHeader numItems={2} total={56} />
             <Routes>
-                <Route exact path="/" element={<HomePage />} />
+                <Route path="/redux-store" element={<HomePage />} />
                 <Route path="/cart" element={<CartPage />} />
             </Routes>
         </main>
