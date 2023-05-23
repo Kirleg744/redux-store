@@ -5,7 +5,7 @@ import { CartPage, HomePage } from "../pages";
 import ShopHeader from "../shop-header/shop-header";
 const App = () => {
     return (
-        <main role="main">
+        <main className="container" role="main">
             <ShopHeader numItems={2} total={56} />
             <Routes>
                 <Route exact path="/" element={<HomePage />} />

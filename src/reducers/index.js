@@ -36,41 +36,29 @@ const updateOrder = (state, bookId, quantity) => {
     };
 };
 
-const filter = (state, value, action) => {
-    const {
-        bookList: { allBooks, books },
-    } = state;
+const filter = (
+    state,
+    nameFilter,
+    priceFilter,
+    isInStockFilter,
+    priceSortFilter
+) => {
+    const { allBooks, books } = state.bookList;
+    const res = allBooks.filter((item) => {
+        return (
+            (item.title.indexOf(nameFilter) > -1) &&
+            (priceFilter >= item.price) &&
+            (isInStockFilter ? isInStockFilter === item.isInStock : true)
+        );
+    });
+    if (priceSortFilter) {
+        return res.sort(function (a, b) {
+            return a.price - b.price;
+        });
+    } else {
+        return res
+    }
 
-    if (action === "SEARCH") {
-        if (value === "") {
-            return {
-                ...state.bookList,
-                books: allBooks,
-            };
-        }
-        return {
-            ...state.bookList,
-            books: books.filter((item) => {
-                return item.title.indexOf(value) > -1;
-            }),
-        };
-    }
-    if (action === "PRICE") {
-        return {
-            ...state.bookList,
-            books: books.filter((item) => {
-                return value >= item.price;
-            }),
-        };
-    }
-    if (action === "IN_STOCK") {
-        return {
-            ...state.bookList,
-            books: allBooks.filter((item) => {
-                return value === item.isInStock;
-            }),
-        };
-    }
 };
 
 const updateBookList = (state, action) => {
@@ -80,9 +68,16 @@ const updateBookList = (state, action) => {
             books: [],
             loading: true,
             error: null,
+            filterValues: {
+                priceFilter: 1000,
+                isInStockFilter: false,
+                nameFilter: "",
+                priceSortFilter: false
+            },
         };
     }
-    console.log(action.type);
+    console.log(action.type)
+    console.log(state)
     switch (action.type) {
         case "FETCH_BOOKS_REQUEST":
             return {
@@ -90,14 +85,10 @@ const updateBookList = (state, action) => {
                 books: [],
                 loading: true,
                 error: null,
-                filterValues: {
-                    priceFilter: null,
-                    isInStockFilter: null,
-                    nameFilter: null
-                }
             };
         case "FETCH_BOOKS_SUCCESS":
             return {
+                ...state.bookList,
                 allBooks: action.payload,
                 books: action.payload,
                 loading: false,
@@ -111,11 +102,65 @@ const updateBookList = (state, action) => {
                 error: true,
             };
         case "BOOK_SEARCHED":
-            return filter(state, action.payload, "SEARCH");
+            return {
+                ...state.bookList,
+                filterValues: {
+                    ...state.bookList.filterValues,
+                    nameFilter: action.payload,
+                },
+                books: filter(
+                    state,
+                    action.payload,
+                    state.bookList.filterValues.priceFilter,
+                    state.bookList.filterValues.isInStockFilter,
+                    state.bookList.filterValues.priceSortFilter
+                ),
+            };
         case "BOOK_FILTERED_BY_PRICE":
-            return filter(state, action.payload, "PRICE");
+            return {
+                ...state.bookList,
+                filterValues: {
+                    ...state.bookList.filterValues,
+                    priceFilter: action.payload,
+                },
+                books: filter(
+                    state,
+                    state.bookList.filterValues.nameFilter,
+                    action.payload,
+                    state.bookList.filterValues.isInStockFilter,
+                    state.bookList.filterValues.priceSortFilter
+                ),
+            };
         case "BOOK_FILTERED_BY_IN_STOCK":
-            return filter(state, action.payload, "IN_STOCK");
+            return {
+                ...state.bookList,
+                filterValues: {
+                    ...state.bookList.filterValues,
+                    isInStockFilter: action.payload,
+                },
+                books: filter(
+                    state,
+                    state.bookList.filterValues.nameFilter,
+                    state.bookList.filterValues.priceFilter,
+                    action.payload,
+                    state.bookList.filterValues.priceSortFilter
+                ),
+            };
+        case "BOOK_SORTED_BY_PRICE":
+            return {
+                ...state.bookList,
+                filterValues: {
+                    ...state.bookList.filterValues,
+                    priceSortFilter: action.payload,
+                },
+                books: filter(
+                    state,
+                    state.bookList.filterValues.nameFilter,
+                    state.bookList.filterValues.priceFilter,
+                    state.bookList.filterValues.isInStockFilter,
+                    action.payload
+                ),
+            };
         default:
             return state.bookList;
     }

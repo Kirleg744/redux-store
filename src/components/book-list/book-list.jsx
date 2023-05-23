@@ -9,6 +9,7 @@ import Spinner from "../spinner/spinner";
 import { bookAddedToCart } from "../../actions";
 
 import ErrorIndicator from "../error-indicator/error-indicator";
+import SortBooks from "../sort-books/sort-books";
 
 class BookListContainer extends Component {
     componentDidMount() {
@@ -37,19 +38,22 @@ class BookListContainer extends Component {
 
 const BookList = ({ books, onAddedToCart }) => {
     return (
-        <ul className="book-list">
-            {books.map((book) => {
-                return (
-                    <li>
-                        <BookListItem
-                            key={book.id}
-                            onAddedToCart={() => onAddedToCart(book.id)}
-                            book={book}
-                        />
-                    </li>
-                );
-            })}
-        </ul>
+        <div>
+            <SortBooks/>
+            <ul className="book-list">
+                {books.map((book) => {
+                    return (
+                        <li>
+                            <BookListItem
+                                key={book.id}
+                                onAddedToCart={() => onAddedToCart(book.id)}
+                                book={book}
+                            />
+                        </li>
+                    );
+                })}
+            </ul>
+        </div>
     );
 };
 

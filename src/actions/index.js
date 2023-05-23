@@ -33,6 +33,13 @@ const bookFilteredByInStock = (value) => {
     };
 };
 
+const bookSortedByPrice = (value) => {
+    return {
+        type: "BOOK_SORTED_BY_PRICE",
+        payload: value,
+    };
+};
+
 const booksError = (error) => {
     return {
         type: "FETCH_BOOKS_FAILURE",
@@ -80,4 +87,5 @@ export {
     bookSearched,
     bookFilteredByPrice,
     bookFilteredByInStock,
+    bookSortedByPrice,
 };

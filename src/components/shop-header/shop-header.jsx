@@ -6,12 +6,11 @@ import { bookSearched } from "../../actions";
 const ShopHeader = ({ totalNum, orderTotal, onSearched }) => {
     const onSearchChange = (e) => {
         const term = e.target.value;
-        console.log(term)
         onSearched(term);
     };
 
     return (
-        <header className="shop-header container">
+        <header className="shop-header">
             <Link to="/">
                 <div href="#" className="logo text-dark">
                     ReStore
